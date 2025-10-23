@@ -1,0 +1,8 @@
+{
+  "name": "AgriSmart - AI Agricultural Platform",
+  "description": "A comprehensive agricultural management platform that leverages AI/ML for data-driven farming decisions. Features include AI-powered weather intelligence, soil health analysis, crop disease detection, and market intelligence.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
