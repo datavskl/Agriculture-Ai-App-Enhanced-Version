@@ -12,9 +12,31 @@ View your app in AI Studio: https://ai.studio/apps/drive/12X6yDfLatA9zvAlGb-dCk8
 
 **Prerequisites:**  Node.js
 
-
 1. Install dependencies:
    `npm install`
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Backend API Server
+
+A production-ready Express + TypeScript backend now lives in [`backend/`](backend). It aggregates all of the data that the Agriculture AI frontend consumes.
+
+### Quick start
+
+```bash
+cd backend
+cp .env.example .env
+npm install
+npm run dev
+```
+
+By default the API listens on `http://localhost:4000`. Update `ALLOWED_ORIGINS` in `.env` if you need to expose the server to additional domains.
+
+### Available APIs
+
+Refer to [`backend/README.md`](backend/README.md) for a full list of routes covering weather, farm management, market intelligence, task tracking, inventory, and analytics dashboards.
+
+### Type checking
+
+Run `npm run build` inside `backend/` to perform a strict type check of the project.
