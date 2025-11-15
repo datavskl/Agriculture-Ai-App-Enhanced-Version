@@ -106,6 +106,7 @@ export const getWeatherInsights = async (weather: WeatherData): Promise<string> 
     Given the following weather data for a farm, provide actionable insights and recommendations for a farmer.
     Keep the advice concise, in bullet points, and easy to understand.
     Current Temperature: ${weather.temperature}°C
+    Current Condition: ${weather.condition}
     Humidity: ${weather.humidity}%
     Wind Speed: ${weather.windSpeed} km/h
     Precipitation Chance: ${weather.precipitation}%
@@ -271,6 +272,18 @@ export const getResourceOptimizationWithROI = async (cropType: string, growthSta
 };
 
 export const generateFarmReport = async (weather: WeatherData, marketData: MarketData[], tasks: Task[]): Promise<string> => {
+    const completedTasks = tasks.filter(t => t.status === 'completed');
+    const pendingTasks = tasks.filter(t => t.status !== 'completed');
+    const overdueHighPriority = tasks.filter(t => {
+        if (t.status === 'completed' || t.priority !== 'high') {
+            return false;
+        }
+        const dueDate = new Date(t.dueDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return dueDate < today;
+    });
+
     const prompt = `
     As an AI farm analyst, generate a weekly summary report based on the following data. The report should be easy to read, well-structured with headings, and provide a high-level overview.
 
@@ -278,7 +291,7 @@ export const generateFarmReport = async (weather: WeatherData, marketData: Marke
         -   Data: ${JSON.stringify(weather)}
 
     2.  **Task Management Overview**: Summarize the task activity. Mention the number of completed vs. pending tasks. Highlight any overdue high-priority tasks.
-        -   Data: ${tasks.length} total tasks. ${tasks.filter(t => t.completed).length} completed. ${tasks.filter(t => !t.completed && t.isHighPriority).length} high-priority tasks pending.
+        -   Data: ${tasks.length} total tasks. ${completedTasks.length} completed. ${pendingTasks.length} pending. ${overdueHighPriority.length} high-priority tasks overdue.
 
     3.  **Market Intelligence Summary**: Analyze the provided market data. What is the current trend? Is it a good time to sell?
         -   Data: ${JSON.stringify(marketData)}

@@ -12,11 +12,18 @@ View your app in AI Studio: https://ai.studio/apps/drive/12X6yDfLatA9zvAlGb-dCk8
 
 **Prerequisites:**  Node.js
 
-1. Install dependencies:
+1. Change into the frontend workspace:
+   `cd frontend`
+2. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+3. Create `.env.local` in the frontend directory and set `GEMINI_API_KEY` to your Gemini API key
+4. Start the Vite dev server:
    `npm run dev`
+
+## Project Structure
+
+- `frontend/` – Vite + React application
+- `backend/` – Express + TypeScript API server
 
 ## Backend API Server
 

@@ -5,12 +5,13 @@ export const MOCK_WEATHER = {
   humidity: 75,
   windSpeed: 12,
   precipitation: 5,
+  condition: 'Sunny',
   forecast: [
-    { day: 'Mon', temp: 29, condition: 'Sunny' },
-    { day: 'Tue', temp: 30, condition: 'Partly Cloudy' },
-    { day: 'Wed', temp: 27, condition: 'Showers' },
-    { day: 'Thu', temp: 31, condition: 'Sunny' },
-    { day: 'Fri', temp: 28, condition: 'Thunderstorms' },
+    { date: '2024-07-01', high: 31, low: 24, condition: 'Sunny' },
+    { date: '2024-07-02', high: 32, low: 25, condition: 'Partly Cloudy' },
+    { date: '2024-07-03', high: 29, low: 23, condition: 'Showers' },
+    { date: '2024-07-04', high: 30, low: 24, condition: 'Sunny' },
+    { date: '2024-07-05', high: 28, low: 22, condition: 'Thunderstorms' },
   ],
 };
 

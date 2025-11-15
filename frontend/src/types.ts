@@ -1,10 +1,18 @@
 
+export interface WeatherForecastEntry {
+  date: string;
+  high: number;
+  low: number;
+  condition: string;
+}
+
 export interface WeatherData {
   temperature: number;
   humidity: number;
   windSpeed: number;
   precipitation: number;
-  forecast: { day: string; temp: number; condition: string }[];
+  condition: string;
+  forecast: WeatherForecastEntry[];
 }
 
 export interface SoilReport {
@@ -31,13 +39,24 @@ export interface MarketData {
     price: number;
 }
 
+export type TaskStatus = 'pending' | 'in-progress' | 'completed';
+
+export type TaskPriority = 'low' | 'medium' | 'high';
+
 export interface Task {
   id: string;
   title: string;
-  category: string;
+  description: string;
   dueDate: string;
-  completed: boolean;
-  isHighPriority: boolean;
+  status: TaskStatus;
+  priority: TaskPriority;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  page: number;
+  pageSize: number;
+  total: number;
 }
 
 export interface ChatMessage {
