@@ -20,7 +20,7 @@ import FarmMap from './pages/FarmMap';
 import FinancialLedger from './pages/FinancialLedger';
 import InventoryManager from './pages/InventoryManager';
 import CommunityHub from './pages/CommunityHub';
-import { Task } from './types';
+import { fetchTasks } from './services/api/tasks';
 
 // Import new pages
 import PestPrediction from './pages/PestPrediction';
@@ -60,35 +60,38 @@ const App: React.FC = () => {
 
   // Advanced Notification System for Overdue Tasks
   useEffect(() => {
-    const checkTasksAndNotify = () => {
+    const checkTasksAndNotify = async () => {
         if (Notification.permission === 'granted') {
-            const storedTasks = localStorage.getItem('agriSmartTasks');
-            if (storedTasks) {
-                const tasks: Task[] = JSON.parse(storedTasks);
+            try {
+                const response = await fetchTasks({ pageSize: 50 });
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // Normalize to the start of the day
+                today.setHours(0, 0, 0, 0);
 
-                const overdueHighPriorityTasks = tasks.filter(task => 
-                    !task.completed && 
-                    task.isHighPriority &&
+                const overdueHighPriorityTasks = response.data.filter(task =>
+                    task.status !== 'completed' &&
+                    task.priority === 'high' &&
                     new Date(task.dueDate) < today
                 );
 
                 if (overdueHighPriorityTasks.length > 0) {
                     const taskTitles = overdueHighPriorityTasks.map(t => t.title).join(', ');
-                    const notification = new Notification('AgriSmart: Overdue Task Alert!', {
+                    new Notification('AgriSmart: Overdue Task Alert!', {
                         body: `High priority task(s) are overdue: ${taskTitles}`,
                         icon: '/vite.svg',
                     });
                 }
+            } catch (error) {
+                console.error('Failed to check tasks for notifications', error);
             }
         }
     };
-    
+
     // Check every hour
-    const intervalId = setInterval(checkTasksAndNotify, 1000 * 60 * 60); 
+    const intervalId = setInterval(() => {
+        void checkTasksAndNotify();
+    }, 1000 * 60 * 60);
     // Check on initial load
-    checkTasksAndNotify();
+    void checkTasksAndNotify();
 
     return () => clearInterval(intervalId);
   }, []);
